@@ -1,0 +1,3 @@
+Module: libiplxhttp
+Version: 1.0.0
+Depends: libpsr7
