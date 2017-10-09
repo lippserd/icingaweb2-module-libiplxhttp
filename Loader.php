@@ -5,7 +5,7 @@ spl_autoload_register(function ($class) {
     $prefix = 'iplx\\Http\\';
     $len = strlen($prefix);
 
-    $baseDir = __DIR__ . '/library/vendor/iplx/Http/';
+    $baseDir = __DIR__ . '/library/Libiplxhttp/iplx/Http/';
 
     if (strncmp($prefix, $class, $len) !== 0) {
         return;
