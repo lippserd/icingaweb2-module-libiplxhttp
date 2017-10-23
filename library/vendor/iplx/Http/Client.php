@@ -76,7 +76,6 @@ class Client implements ClientInterface
         $curlOptions += [
             CURLOPT_CUSTOMREQUEST   => $request->getMethod(),
             CURLOPT_HTTPHEADER      => $headers,
-            CURLOPT_UPLOAD          => true,
             CURLOPT_URL             => (string) $request->getUri()->withFragment('')
         ];
 
@@ -90,6 +89,19 @@ class Client implements ClientInterface
 
         if (! $request->hasHeader('Expect')) {
             $curlOptions[CURLOPT_HTTPHEADER][] = 'Expect:';
+        }
+
+        if ($request->getBody()->getSize() !== 0) {
+            $curlOptions[CURLOPT_UPLOAD] = true;
+
+            $body = $request->getBody();
+            if ($body->isSeekable()) {
+                $body->seek(0);
+            }
+
+            $curlOptions[CURLOPT_READFUNCTION] = function ($ch, $infile, $length) use ($body) {
+                return $body->read($length);
+            };
         }
 
         if ($request->getProtocolVersion()) {
@@ -110,14 +122,6 @@ class Client implements ClientInterface
 
             $curlOptions[CURLOPT_HTTP_VERSION] = $protocolVersion;
         }
-
-        $body = $request->getBody();
-        if ($body->isSeekable()) {
-            $body->seek(0);
-        }
-        $curlOptions[CURLOPT_READFUNCTION] = function ($ch, $infile, $length) use ($body) {
-            return $body->read($length);
-        };
 
         $handle = new Handle();
 
