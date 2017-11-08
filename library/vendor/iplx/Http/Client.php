@@ -66,6 +66,7 @@ class Client implements ClientInterface
         $curlOptions = [
             CURLOPT_FOLLOWLOCATION  => true,
             CURLOPT_RETURNTRANSFER  => false,
+            CURLOPT_FAILONERROR     => true,
             CURLOPT_USERAGENT       => $this->getAgent()
         ];
 
