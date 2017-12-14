@@ -65,7 +65,6 @@ class Client implements ClientInterface
 
         $curlOptions = [
             CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_RETURNTRANSFER  => false,
             CURLOPT_FAILONERROR     => true,
             CURLOPT_USERAGENT       => $this->getAgent()
         ];
@@ -77,6 +76,7 @@ class Client implements ClientInterface
         $curlOptions += [
             CURLOPT_CUSTOMREQUEST   => $request->getMethod(),
             CURLOPT_HTTPHEADER      => $headers,
+            CURLOPT_RETURNTRANSFER  => false,
             CURLOPT_URL             => (string) $request->getUri()->withFragment('')
         ];
 
